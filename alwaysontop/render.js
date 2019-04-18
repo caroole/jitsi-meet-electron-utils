@@ -162,7 +162,7 @@ class AlwaysOnTop extends EventEmitter {
      * @returns {void}
      */
     _onConferenceJoined() {
-        this._jitsiMeetElectronWindow.on('blur', this._openAlwaysOnTopWindow);
+        this._jitsiMeetElectronWindow.on('minimize', this._openAlwaysOnTopWindow);
         this._jitsiMeetElectronWindow.on('focus', this._closeAlwaysOnTopWindow);
         this._jitsiMeetElectronWindow.on('close', this._closeAlwaysOnTopWindow);
         this._intersectionObserver.observe(this._api.getIFrame());
