@@ -176,7 +176,7 @@ class AlwaysOnTop extends EventEmitter {
     _onConferenceLeft() {
         this._intersectionObserver.unobserve(this._api.getIFrame());
         this._jitsiMeetElectronWindow.removeListener(
-            'blur',
+            'minimize',
             this._openAlwaysOnTopWindow
         );
         this._jitsiMeetElectronWindow.removeListener(
