@@ -11,10 +11,12 @@ window.addEventListener('beforeunload', onbeforeunload);
 
 window.addEventListener('dblclick', ondblclick);
 
-onload();
-setupDraggable();
-// load all resources from meet
-api._getAlwaysOnTopResources().forEach(src => loadFile(src));
+document.addEventListener("DOMContentLoaded", () => {
+    onload();
+    setupDraggable();
+    // load all resources from meet
+    api._getAlwaysOnTopResources().forEach(src => loadFile(src));
+});
 
 
 /**
