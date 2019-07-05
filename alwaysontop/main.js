@@ -28,12 +28,14 @@ let position = {};
  */
 function onAlwaysOnTopWindow(
         jitsiMeetWindow,
+        logger,
         event,
         url,
         frameName,
         disposition,
         options) {
     if (frameName === 'AlwaysOnTop') {
+        logger.info("enter onAlwaysOnTopWindow");
         event.preventDefault();
         const win = event.newGuest = new BrowserWindow(
             Object.assign(options, {
@@ -160,7 +162,7 @@ function getPosition () {
  * @param {BrowserWindow} jitsiMeetWindow - the BrowserWindow object which
  * displays Jitsi Meet
  */
-module.exports = function setupAlwaysOnTopMain(jitsiMeetWindow) {
+module.exports = function setupAlwaysOnTopMain(jitsiMeetWindow,logger) {
     ipcMain.on('jitsi-always-on-top', (event, { type, data = {} }) => {
         if (type === 'event' && data.name === 'position') {
             const { x, y } = data;
@@ -175,7 +177,7 @@ module.exports = function setupAlwaysOnTopMain(jitsiMeetWindow) {
     jitsiMeetWindow.webContents.on(
         'new-window',
         (...args) => {
-            onAlwaysOnTopWindow(jitsiMeetWindow, ...args);
+            onAlwaysOnTopWindow(jitsiMeetWindow,logger, ...args);
         }
     );
 };
