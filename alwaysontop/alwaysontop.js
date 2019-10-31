@@ -4,19 +4,25 @@ const {
     ondblclick,
     onload,
     onbeforeunload,
-    shouldImplementDrag
+    shouldImplementDrag,
+    getCurrentSize
 } = window.alwaysOnTop;
+
+/**
+ * Stores the initial size of AOT window before moving.
+ * This is needed in order to keep the initial size during move on
+ * monitors with a scaling applied
+ */
+let initialSize;
 
 window.addEventListener('beforeunload', onbeforeunload);
 
 window.addEventListener('dblclick', ondblclick);
 
-document.addEventListener("DOMContentLoaded", () => {
-    onload();
-    setupDraggable();
-    // load all resources from meet
-    api._getAlwaysOnTopResources().forEach(src => loadFile(src));
-});
+onload();
+setupDraggable();
+// load all resources from meet
+api._getAlwaysOnTopResources().forEach(src => loadFile(src));
 
 
 /**
@@ -27,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function setupDraggable() {
     if (shouldImplementDrag) {
         window.addEventListener('mousedown', mouseDownEvent => {
+            initialSize = getCurrentSize();
             pageX = mouseDownEvent.pageX;
             pageY = mouseDownEvent.pageY;
             window.addEventListener('mousemove', drag);
@@ -57,7 +64,7 @@ function drag(mouseMoveEvent) {
     mouseMoveEvent.stopPropagation();
     mouseMoveEvent.preventDefault();
     const { screenX, screenY } = mouseMoveEvent;
-    move(screenX - pageX, screenY - pageY);
+    move(screenX - pageX, screenY - pageY, initialSize);
 }
 
 /**
